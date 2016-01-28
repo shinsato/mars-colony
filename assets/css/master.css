@@ -1,0 +1,12 @@
+.room{
+    border: 1px solid #ccc;
+    display: block;
+    width: 100px;
+    height: 100px;
+    float:left;
+    margin: 1%;
+}
+
+.dead {
+    opacity: .3;
+}

@@ -7,40 +7,88 @@
         var Person = function(){
             this.gender = chance.gender();
             this.name = chance.name({ gender: this.gender });
-            this.longevity = _.random(0,80);
             this.age = _.random(15,30);
-            this.compatibilty = _.random(100);
-            this.fertility = _.random(100);
+            this.endurance = _.random(3,6);
+            this.intelligence = _.random(-2,2);
+            this.charisma = _.random(-2,2);
             this.alive = true;
             this.withChild = false;
+            this.room = 0;
         };
-        Person.prototype.Age = function(){
+        Person.prototype.Age = function() {
             if(!this.alive){
                 return false;
-            }
-            this.age++;
-            if(this.age >= this.longevity){
-                this.alive = false;
             }
 
             //Do womanly things (I'm gonna get sued for this section)
             if(this.gender == 'Female'){
-                if(this.withChild){ //Give Birth
+                if(this.withChild >= 3){ //Give Birth
                     this.withChild = false;
                     var person = new Person();
                     person.id = $scope.colony.colonists.length;
-                    $scope.colony.colonists.push();//@todo link newborn to parents
+                    person.age = 0;
+                    $scope.colony.colonists.push(person);//@todo link newborn to parents
+                }
+                if(this.IsFertile()){
+                    for(var i in $scope.colony.colonists){
+                        var current_colonist = $scope.colony.colonists[i];
+                        if(this.id != current_colonist.id
+                        && this.room >= 1 && this.room <= 10
+                        && this.room == current_colonist.room
+                        && this.IsFertile()
+                        && current_colonist.gender == 'Male'){
+                            var roll = _.random(1,6);
+                            var roll_with_mods = roll + this.charisma + current_colonist.charisma;
+                            if(roll_with_mods >= 4){
+                                this.withChild = 1;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
+
+            this.age++;
+            if(this.withChild > 0){
+                this.withChild++;
+            }
+
+            this.RollEndurance();
+            if(this.endurance < 1){
+                this.alive = false;
+            }
+        };
+        Person.prototype.RollEndurance = function() {
+            var roll = _.random(1,10);
+            if(this.age <= 2 || this.age >=75){
+                roll = roll - 2;
+            }
+            else if(this.age <= 5 || this.age >= 65) {
+                roll = roll - 1;
+            }
+            if(roll <= 1){
+                this.endurance--;
+            }
+        };
+        Person.prototype.IsFertile = function() {
+            if(this.age >= 18 && this.withChild == false) {
+                if(this.gender == "Female" && this.age >= 51) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
         };
 
-        var Colony = function(name, num_colonists){
+        var Colony = function(name, num_colonists) {
+            num_colonists = num_colonists || 6;
             this.name = name;
             this.age = 0;
             this.alive = true;
             this.colonists = [];
             this.couples = [];
-            for (var i=0; i<=num_colonists; i++){
+
+            for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
                 person.id = this.colonists.length;
                 this.colonists.push(person);
@@ -67,7 +115,7 @@
         };
 
         $scope.beginColony = function(){
-            $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists - 1);
+            $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists);
             $scope.game.started = true;
             $scope.game.colonyStarted = true;
             $scope.startColony();
@@ -77,6 +125,7 @@
                 $scope.colony.Age();
                 if(!$scope.colony.alive){
                     $scope.game.colonyStarted = false;
+                    $scope.stopColony();
                 }
             },1000);
         };
