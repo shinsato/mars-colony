@@ -21,6 +21,9 @@
             }
 
             //Do womanly things (I'm gonna get sued for this section)
+            if(this.withChild > 0){
+                this.withChild++;
+            }
             if(this.gender == 'Female'){
                 if(this.withChild >= 3){ //Give Birth
                     this.withChild = false;
@@ -49,9 +52,6 @@
             }
 
             this.age++;
-            if(this.withChild > 0){
-                this.withChild++;
-            }
 
             this.RollEndurance();
             if(this.endurance < 1){
@@ -71,6 +71,9 @@
             }
         };
         Person.prototype.IsFertile = function() {
+            if(!this.alive){
+                return false;
+            }
             if(this.age >= 18 && this.withChild == false) {
                 if(this.gender == "Female" && this.age >= 51) {
                     return false;
