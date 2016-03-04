@@ -31,6 +31,7 @@
             buildOut(this.endurance);
             this.uid = this.charisma.gene.concat(this.endurance.gene, this.strength.gene, this.intelligence.gene);
 
+            this.farming = false;
 
             this.alive = true;
             this.withChild = false;
@@ -40,6 +41,12 @@
             if(!this.alive){
                 return false;
             }
+            // Farming -> http://FunnyOrDie.com/m/e2h
+
+            if(this.farming) {
+                var attempt = this.RollStrength();
+                if(attempt > 5) { console.log(attempt, "Trying"), Colony.food++; }
+                }
 
             //Do womanly things (I'm gonna get sued for this section)
             if(this.withChild > 0){
@@ -62,9 +69,12 @@
                         && this.IsFertile()
                         && current_colonist.gender == 'Male'){
                             var roll = _.random(1,6);
+                            console.log("Roll to conceive");
                             var roll_with_mods = roll + this.charisma + current_colonist.charisma;
                             if(roll_with_mods >= 4){
                                 this.withChild = 1;
+                                console.log("With child!");
+
                                 break;
                             }
                         }
@@ -75,9 +85,12 @@
             this.age++;
 
             this.RollEndurance();
+
             if(this.endurance.attr < 1){
                 this.alive = false;
             }
+
+            //this.RollStrength();
         };
         Person.prototype.RollEndurance = function() {
             var roll = _.random(1,10);
@@ -91,6 +104,12 @@
                 this.endurance.attr--;
             }
         };
+
+        Person.prototype.RollStrength = function() {
+            var roll = _.random(1,10);
+            return roll + (this.endurance.attr - 5);
+        };
+
         Person.prototype.IsFertile = function() {
             if(!this.alive){
                 return false;
@@ -111,6 +130,7 @@
             this.alive = true;
             this.colonists = [];
             this.couples = [];
+            this.food = num_colonists * 10;
 
             for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
@@ -120,11 +140,19 @@
         };
         Colony.prototype.Age = function(){
             var anyone_alive = false;
+            var that = this;
             this.age++;
+            this.food--;
             for(var i in this.colonists){
                 this.colonists[i].Age();
                 if(this.colonists[i].alive){
                     anyone_alive = true;
+                }
+                if(this.colonists[i].farming) {
+                    var farmed = this.colonists[i].RollStrength();
+                    if(farmed > 5)
+                    that.food++;
+                    console.log("Food Fired", farmed);
                 }
             }
             this.alive = anyone_alive;
