@@ -75,7 +75,7 @@
             this.age++;
 
             this.RollEndurance();
-            if(this.endurance < 1){
+            if(this.endurance.attr < 1){
                 this.alive = false;
             }
         };
@@ -88,7 +88,7 @@
                 roll = roll - 1;
             }
             if(roll <= 1){
-                this.endurance--;
+                this.endurance.attr--;
             }
         };
         Person.prototype.IsFertile = function() {
