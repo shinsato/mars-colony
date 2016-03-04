@@ -4,13 +4,34 @@
     $angular.module('app', [])
 
     .controller('appController', ['$scope', '$interval', function($scope, $interval) {
+
+
+
+
+
+
+
+
         var Person = function(){
             this.gender = chance.gender();
             this.name = chance.name({ gender: this.gender });
             this.age = _.random(15,30);
-            this.endurance = _.random(3,6);
-            this.intelligence = _.random(-2,2);
-            this.charisma = _.random(-2,2);
+            //
+            // this.endurance = _.random(3,6);
+            // this.intelligence = _.random(-2,2);
+            // this.charisma = _.random(-2,2);
+
+            this.charisma = {};
+            buildOut(this.charisma);
+            this.strength = {};
+            buildOut(this.strength);
+            this.intelligence = {};
+            buildOut(this.intelligence);
+            this.endurance = {};
+            buildOut(this.endurance);
+            this.uid = this.charisma.gene.concat(this.endurance.gene, this.strength.gene, this.intelligence.gene);
+
+
             this.alive = true;
             this.withChild = false;
             this.room = 0;
@@ -146,6 +167,11 @@
                 $scope.startColony();
             }
         }
+    }])
+    .controller('manageCrew', ['$scope', function($scope) {
+
+
+
     }])
     .directive('pressSpace', function () {
     return function (scope, element, attrs) {

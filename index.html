@@ -8,6 +8,8 @@
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js" ></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" ></script>
 
+    <script type="text/javascript" src="assets/js/utils.js"></script>
+
     <script type="text/javascript" src="assets/js/app.js"></script>
     <script type="text/javascript" src="lib/js/chance.js"></script>
 </head>
@@ -34,7 +36,7 @@
         <table ng-show="game.colonyStarted">
             <thead>
                 <tr>
-                    <td>Room</td><td>Gender</td><td>Name</td><td>Age</td><td>Endurance</td><td>Intelligence</td><td>Charisma</td><td>With Child</td>
+                    <td>Room</td><td>Gender</td><td>Name</td><td>Age</td><td>Endurance</td><td>Intelligence</td><td>Charisma</td><td>DNA/UID</td><td>With Child</td>
                 </tr>
             </thead>
             <tbody ng-repeat="colonist in colony.colonists">
@@ -45,9 +47,11 @@
                     </td>
                     <td>{{::colonist.name}}</td>
                     <td>{{colonist.age}}</td>
-                    <td>{{colonist.endurance}}</td>
-                    <td>{{::colonist.intelligence}}</td>
-                    <td>{{::colonist.charisma}}</td>
+                    <td>{{colonist.endurance.attr}}</td>
+                    <td>{{::colonist.intelligence.attr}}</td>
+                    <td>{{::colonist.charisma.attr}}</td>
+                    <!-- <td>{{::colonist.uid}}</td> -->
+                    <td><em style="color: #bcbcbc;">Commented Out</td>
                     <td>{{colonist.withChild}}</td>
                 </tr>
             </tbody>
