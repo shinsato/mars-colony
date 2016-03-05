@@ -45,7 +45,7 @@
 
             if(this.farming) {
                 var attempt = this.RollStrength();
-                if(attempt > 5) { console.log(attempt, "Trying"), Colony.food++; }
+                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2}
                 }
 
             //Do womanly things (I'm gonna get sued for this section)
@@ -60,14 +60,17 @@
                     person.age = 0;
                     $scope.colony.colonists.push(person);//@todo link newborn to parents
                 }
-                if(this.IsFertile()){
+                if(this.IsFertile() && !this.farming){
+                    console.log("trying", this.farming);
+
                     for(var i in $scope.colony.colonists){
                         var current_colonist = $scope.colony.colonists[i];
                         if(this.id != current_colonist.id
                         && this.room >= 1 && this.room <= 10
                         && this.room == current_colonist.room
                         && this.IsFertile()
-                        && current_colonist.gender == 'Male'){
+                        && current_colonist.gender == 'Male'
+                        && current_colonist.farming === false){
                             var roll = _.random(1,6);
                             console.log("Roll to conceive");
                             var roll_with_mods = roll + this.charisma.attr + current_colonist.charisma.attr;
