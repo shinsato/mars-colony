@@ -70,7 +70,7 @@
                         && current_colonist.gender == 'Male'){
                             var roll = _.random(1,6);
                             console.log("Roll to conceive");
-                            var roll_with_mods = roll + this.charisma + current_colonist.charisma;
+                            var roll_with_mods = roll + this.charisma.attr + current_colonist.charisma.attr;
                             if(roll_with_mods >= 4){
                                 this.withChild = 1;
                                 console.log("With child!");
