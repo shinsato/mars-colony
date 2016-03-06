@@ -1,7 +1,9 @@
 (function($angular, _) {
     'use strict';
 
-    $angular.module('app', [])
+    $angular.module('app', [''])
+
+
 
     .controller('appController', ['$scope', '$interval', function($scope, $interval) {
 
@@ -45,7 +47,7 @@
 
             if(this.farming) {
                 var attempt = this.RollStrength();
-                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2}
+                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2; }
                 }
 
             //Do womanly things (I'm gonna get sued for this section)
