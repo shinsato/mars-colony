@@ -1,9 +1,7 @@
 (function($angular, _) {
     'use strict';
 
-    $angular.module('app', [''])
-
-
+    $angular.module('app', [])
 
     .controller('appController', ['$scope', '$interval', function($scope, $interval) {
 
@@ -11,7 +9,7 @@
 
 
 
-
+        $scope.totalCount = 0;
 
 
         var Person = function(){
@@ -38,6 +36,7 @@
             this.alive = true;
             this.withChild = false;
             this.room = 0;
+            $scope.totalCount++;
         };
         Person.prototype.Age = function() {
             if(!this.alive){
@@ -47,7 +46,7 @@
 
             if(this.farming) {
                 var attempt = this.RollStrength();
-                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2; }
+                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2}
                 }
 
             //Do womanly things (I'm gonna get sued for this section)
@@ -93,6 +92,7 @@
 
             if(this.endurance.attr < 1){
                 this.alive = false;
+                $scope.totalCount--;
             }
 
             //this.RollStrength();
@@ -130,12 +130,13 @@
 
         var Colony = function(name, num_colonists) {
             num_colonists = num_colonists || 6;
+            this.starterCount = num_colonists;
             this.name = name;
             this.age = 0;
             this.alive = true;
             this.colonists = [];
             this.couples = [];
-            this.food = num_colonists * 10;
+            this.food = num_colonists * 7;
 
             for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
@@ -148,6 +149,8 @@
             var that = this;
             this.age++;
             this.food--;
+
+
             for(var i in this.colonists){
                 this.colonists[i].Age();
                 if(this.colonists[i].alive){

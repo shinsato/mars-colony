@@ -32,7 +32,7 @@
         <button ng-click="beginColony()">Start Colony</button>
     </div>
     <div>
-        <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}}</h1>
+        <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} total Count: {{totalCount}}</h1>
         <h2 style="color:red;" ng-show="game.started && !colony.alive">Everyone's dead. Try again?</h2>
         <table ng-show="game.colonyStarted">
             <thead>
