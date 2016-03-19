@@ -42,7 +42,7 @@
             </thead>
             <tbody ng-repeat="colonist in colony.colonists">
                 <tr ng-class="{'dead': !colonist.alive}">
-                    <td><input type="text" ng-model="colonist.room"/></td>
+                    <td><input type="text" ng-model="colonist.room_id"/></td>
                     <td>
                         <select ng-model="colonist.activity" ng-init="colonist.activity = 'nothing'">
                             <option ng-repeat="task in activity" ng-model="colonist.activity" value="{{task}}">{{task}}</option>

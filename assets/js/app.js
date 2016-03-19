@@ -5,13 +5,42 @@
 
     .controller('appController', ['$scope', '$interval', function($scope, $interval) {
 
-
-
-
-
         $scope.totalCount = 0;
 
         $scope.activity = ["nothing","farming","mining"];
+
+        var Room = function(){
+            this.id = 0;
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+            this.type = 'living';
+            this.capacity = 4;
+            this.colonists = []
+        }
+        Room.prototype.AtCapacity = function(){
+            if(this.colonists.length >= this.capacity){
+                return true;
+            }
+            return false;
+        }
+        Room.prototype.AddColonist = function(colonist){
+            if(!this.AtCapacity()){
+                this.colonists.push(colonist);
+                colonist.room_id = this.id;
+                return true;
+            }
+            return false;
+        }
+        Room.prototype.RemoveColonist = function(colonist){
+            _.find(this.colonists,function(rcolonist, rkey){
+                if(rcolonist.id == colonist.id){
+                    this.colonists.splice(rkey,1);
+                    return true;
+                }
+            });
+            return true;
+        }
 
         var Person = function(){
             this.gender = chance.gender();
@@ -36,51 +65,30 @@
 
             this.alive = true;
             this.withChild = false;
-            this.room = 0;
+            this.room_id = 0;
             $scope.totalCount++;
         };
+        Person.prototype.GetRoom = function(){
+            return _.findWhere($scope.colony.rooms, {id:this.room_id});
+        }
         Person.prototype.Age = function() {
             if(!this.alive){
                 return false;
             }
 
-
-
-
             //Do womanly things (I'm gonna get sued for this section)
             if(this.withChild > 0){
                 this.withChild++;
             }
-            if(this.gender == 'Female'){
-                if(this.withChild >= 3){ //Give Birth
+            if(this.gender == 'Female' && this.withChild >= 3){//Give Birth
+                var room = this.GetRoom();
+                if(!room.AtCapacity()){ // cant give birth in a full room; hold it in! @todo fix this with a better mechanic
                     this.withChild = false;
                     var person = new Person();
                     person.id = $scope.colony.colonists.length;
                     person.age = 0;
                     $scope.colony.colonists.push(person);//@todo link newborn to parents
-                }
-                if(this.IsFertile() && !this.activity === "farming"){
-                    console.log("trying", this.activity);
-
-                    for(var i in $scope.colony.colonists){
-                        var current_colonist = $scope.colony.colonists[i];
-                        if(this.id != current_colonist.id
-                        && this.room >= 1 && this.room <= 10
-                        && this.room == current_colonist.room
-                        && this.IsFertile()
-                        && current_colonist.gender == 'Male'
-                        && current_colonist.activty === "nothing"){
-                            var roll = _.random(1,6);
-                            console.log("Roll to conceive");
-                            var roll_with_mods = roll + this.charisma.attr + current_colonist.charisma.attr;
-                            if(roll_with_mods >= 4){
-                                this.withChild = 1;
-                                console.log("With child!");
-
-                                break;
-                            }
-                        }
-                    }
+                    room.colonists.push(person);
                 }
             }
 
@@ -136,50 +144,98 @@
             this.couples = [];
             this.food = num_colonists * 7;
             this.ore = 0;
+            this.rooms = [];
 
+            var room = new Room();
+            room.id = this.rooms.length;
             for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
                 person.id = this.colonists.length;
                 this.colonists.push(person);
+                if(!room.AddColonist(person)){
+                    this.rooms.push(room);
+
+                    room = new Room();
+                    room.id = this.rooms.length;
+                    room.AddColonist(person);
+                }
             }
+            this.rooms.push(room);
+
+            //Make mining and farming rooms
+            var mining_room = new Room();
+            mining_room.type = 'mining';
+            mining_room.id = this.rooms.length;
+            this.rooms.push(mining_room);
+
+            var farming_room = new Room();
+            farming_room.type = 'farming';
+            farming_room.id = this.rooms.length;
+            this.rooms.push(farming_room);
         };
         Colony.prototype.Age = function(){
-            var anyone_alive = false;
-            var that = this;
-            this.age++;
-            this.food--;
+            var self = this;
+            self.age++;
+            self.food--;
 
+            _.each(self.colonists,function(colonist){
+                colonist.Age();
 
-            for(var i in this.colonists){
-                this.colonists[i].Age();
-                if(this.colonists[i].alive){
-                    anyone_alive = true;
-                }
-                if(this.colonists[i].activity === "farming") {
-                    var farmed = this.colonists[i].RollStrength();
-                    if(farmed > 5)
-                    that.food++;
-                    console.log("Food Fired", farmed);
-                }
-                if(this.colonists[i].activity === "mining") {
-                    console.log("Mining!");
-                    var attempt = this.colonists[i].RollStrength();
-                    if(attempt > 7) {
-                        that.ore++;
-                        console.log("mining success!");
-                    } else if (attempt >= 2) {
-                        this.endurance--;
-                        console.log("R'uh r'oh.");
+                var room = colonist.GetRoom();
+                if(room.type == 'living'){
+                    _.find(room.colonists, function(current_colonist){
+                        if(colonist.id != current_colonist.id
+                        && colonist.IsFertile()
+                        && current_colonist.IsFertile()
+                        && current_colonist.gender == 'Male'){
+                            var roll = _.random(1,6);
+                            console.log("Roll to conceive");
+                            var roll_with_mods = roll + colonist.charisma.attr + current_colonist.charisma.attr;
+                            if(roll_with_mods >= 4){
+                                colonist.withChild = 1;
+                                console.log("With child!");
 
-                    } else if(attempt === 0) {
-                        this.alive = false;
-                        console.log("NOOOOOOOO.");
+                                return true;
+                            }
                         }
+                    });
+                }
+                else if(room.type == "farming") {
+                    var farmed = colonist.RollStrength();
+                    if(farmed > 5)
+                    self.food++;
+                    console.log("Food Farmed", farmed);
+                }
+                else if(room.type == "mining") {
+                    console.log("Mining!");
+                    var attempt = colonist.RollStrength();
+                    if(attempt > 7) {
+                        self.ore++;
+                        console.log("mining success!");
+                    }
+                    else if (attempt >= 2) {
+                        colonist.endurance--;
+                        console.log("Ouch.");
+
+                    }
+                    else if(attempt === 0) {
+                        colonist.alive = false;
+                        console.log("NOOOOOOOO.");
                     }
                 }
+            });
 
-            this.alive = anyone_alive;
+            this.alive = _.some(self.colonists, {alive: true});
         };
+
+        Colony.prototype.MoveColonistToRoom = function(colonist, room_id){
+            var rroom_id = colonist.room_id;
+            var room = _.findWhere(this.rooms, {id: room_id});
+            if(room.AddColonist(colonist)){
+                var rroom = _.findWhere(this.rooms, {id: rroom_id});
+                rroom.RemoveColonist(colonist);
+            }
+        }
 
         $scope.onDragSucces = function(index,obj,evt) {
                 var otherObj = $scope.draggableObjects[index];
