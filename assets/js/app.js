@@ -11,6 +11,7 @@
 
         $scope.totalCount = 0;
 
+        $scope.activity = ["nothing","farming","mining"];
 
         var Person = function(){
             this.gender = chance.gender();
@@ -31,7 +32,7 @@
             buildOut(this.endurance);
             this.uid = this.charisma.gene.concat(this.endurance.gene, this.strength.gene, this.intelligence.gene);
 
-            this.farming = false;
+            this.activity = "nothing";
 
             this.alive = true;
             this.withChild = false;
@@ -42,12 +43,9 @@
             if(!this.alive){
                 return false;
             }
-            // Farming -> http://FunnyOrDie.com/m/e2h
 
-            if(this.farming) {
-                var attempt = this.RollStrength();
-                if(attempt > 5) { Colony.food++; } else if (attempt >= 9) { Colony.food = Colony.food + 2}
-                }
+
+
 
             //Do womanly things (I'm gonna get sued for this section)
             if(this.withChild > 0){
@@ -61,8 +59,8 @@
                     person.age = 0;
                     $scope.colony.colonists.push(person);//@todo link newborn to parents
                 }
-                if(this.IsFertile() && !this.farming){
-                    console.log("trying", this.farming);
+                if(this.IsFertile() && !this.activity === "farming"){
+                    console.log("trying", this.activity);
 
                     for(var i in $scope.colony.colonists){
                         var current_colonist = $scope.colony.colonists[i];
@@ -71,7 +69,7 @@
                         && this.room == current_colonist.room
                         && this.IsFertile()
                         && current_colonist.gender == 'Male'
-                        && current_colonist.farming === false){
+                        && current_colonist.activty === "nothing"){
                             var roll = _.random(1,6);
                             console.log("Roll to conceive");
                             var roll_with_mods = roll + this.charisma.attr + current_colonist.charisma.attr;
@@ -137,6 +135,7 @@
             this.colonists = [];
             this.couples = [];
             this.food = num_colonists * 7;
+            this.ore = 0;
 
             for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
@@ -156,13 +155,29 @@
                 if(this.colonists[i].alive){
                     anyone_alive = true;
                 }
-                if(this.colonists[i].farming) {
+                if(this.colonists[i].activity === "farming") {
                     var farmed = this.colonists[i].RollStrength();
                     if(farmed > 5)
                     that.food++;
                     console.log("Food Fired", farmed);
                 }
-            }
+                if(this.colonists[i].activity === "mining") {
+                    console.log("Mining!");
+                    var attempt = this.colonists[i].RollStrength();
+                    if(attempt > 7) {
+                        that.ore++;
+                        console.log("mining success!");
+                    } else if (attempt >= 2) {
+                        this.endurance--;
+                        console.log("R'uh r'oh.");
+
+                    } else if(attempt === 0) {
+                        this.alive = false;
+                        console.log("NOOOOOOOO.");
+                        }
+                    }
+                }
+
             this.alive = anyone_alive;
         };
 

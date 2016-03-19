@@ -32,7 +32,7 @@
         <button ng-click="beginColony()">Start Colony</button>
     </div>
     <div>
-        <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} total Count: {{totalCount}}</h1>
+        <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} |  Ore Mined: {{colony.ore}}</h1>
         <h2 style="color:red;" ng-show="game.started && !colony.alive">Everyone's dead. Try again?</h2>
         <table ng-show="game.colonyStarted">
             <thead>
@@ -44,9 +44,8 @@
                 <tr ng-class="{'dead': !colonist.alive}">
                     <td><input type="text" ng-model="colonist.room"/></td>
                     <td>
-                        <select ng-model="colonist.farming"/>
-                            <option ng-model="colonist.farming" value="false">Nothing</option>
-                            <option  ng-model="colonist.farming" value="True">Farming</option>
+                        <select ng-model="colonist.activity" ng-init="colonist.activity = 'nothing'">
+                            <option ng-repeat="task in activity" ng-model="colonist.activity" value="{{task}}">{{task}}</option>
                         </select>
                     </td>
                     <td>
@@ -54,7 +53,7 @@
                     </td>
                     <td>{{::colonist.name}}</td>
                     <td>{{colonist.age}}</td>
-                    <td>{{colonist.farming}}</td>
+                    <td>{{colonist.activity}}</td>
                     <td>{{colonist.endurance.attr}}</td>
                     <td>{{::colonist.intelligence.attr}}</td>
                     <td>{{::colonist.charisma.attr}}</td>
