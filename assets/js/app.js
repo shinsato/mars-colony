@@ -234,7 +234,9 @@
             if(room.AddColonist(colonist)){
                 var rroom = _.findWhere(this.rooms, {id: rroom_id});
                 rroom.RemoveColonist(colonist);
+                return true;
             }
+            return false;
         }
 
         $scope.onDragSucces = function(index,obj,evt) {
