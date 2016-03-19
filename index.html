@@ -37,17 +37,14 @@
         <table ng-show="game.colonyStarted">
             <thead>
                 <tr>
-                    <td>Room</td><td>Activity</td><td>Gender</td><td>Name</td><td>Age</td><td>Farming</td><td>Endurance</td><td>Intelligence</td><td>Charisma</td><td>DNA/UID</td><td>With Child</td>
+                    <td>Room</td><td>Gender</td><td>Name</td><td>Age</td><td>Farming</td><td>Endurance</td><td>Intelligence</td><td>Charisma</td><td>DNA/UID</td><td>With Child</td>
                 </tr>
             </thead>
             <tbody ng-repeat="colonist in colony.colonists">
                 <tr ng-class="{'dead': !colonist.alive}">
-                    <td><input type="text" ng-model="colonist.room_id"/></td>
                     <td>
-                        <select ng-model="colonist.activity" ng-init="colonist.activity = 'nothing'">
-                            <option ng-repeat="task in activity" ng-model="colonist.activity" value="{{task}}">{{task}}</option>
+                        <select ng-model="colonist.room" ng-options="room.id+':'+room.type for room in colony.rooms">
                         </select>
-                    </td>
                     <td>
                         <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                     </td>
