@@ -64,6 +64,28 @@
                 </tr>
             </tbody>
         </table>
+
+
+        <!-- Colonists but with divs -->
+        <h1> DIVS</h1>
+        <div id="colonist-container">
+            <ul id="room-0" class="room" ng-drop="true">
+                <li ng-repeat="colonist in colony.colonists | filter: {room: 0}" ng-drag="true">
+                    <h4>{{colonist.name}}</h4>
+                </li>
+            </ul>
+
+            <ul id="room-1" class="room" ng-drop="true">
+                <li ng-repeat="colonist in colony.colonists | filter: {room: 1}">
+                    <h4>{{colonist.name}}</h4>
+                </li>
+            </ul>
+            <ul>
+                <pre>{{colony.colonists | json}}</pre>
+            </ul>
+        </div>
+
+
     </div>
 
     <!-- <div id="colony-container">

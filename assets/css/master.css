@@ -14,13 +14,5 @@ body {
   opacity: .3; }
 
 #colony-container .room {
-  width: 20vw;
-  height: 20vw;
   background: #efefef;
   border: black 1px solid; }
-#colony-container .item {
-  width: 20%;
-  height: 20%;
-  border: black 1px solid;
-  margin: .2em;
-  float: left; }
