@@ -1,7 +1,7 @@
 (function($angular, _) {
     'use strict';
 
-    $angular.module('app', [])
+    $angular.module('app', ['ngDraggable'])
 
     .controller('appController', ['$scope', '$interval', function($scope, $interval) {
 
@@ -165,6 +165,14 @@
             }
             this.alive = anyone_alive;
         };
+
+        $scope.onDragSucces = function(index,obj,evt) {
+                var otherObj = $scope.draggableObjects[index];
+                var otherIndex = $scope.draggableObjects.indexOf(obj);
+                $scope.draggableObjects[index] = obj;
+                $scope.draggableObjects[otherIndex] = otherObj;
+            }
+
 
         $scope.game = {
             'theLoop': false,
