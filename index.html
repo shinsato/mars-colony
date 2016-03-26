@@ -62,16 +62,17 @@
         </table>
     </div>
 
-    <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)">
-        {{room.id}}
+    <div id="room-container">
+        <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
+            {{room.id}}
 
-        <ul>
-            <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
-                <div>{{::colonist.name}}</div>
-            </li>
-        </ul>
+            <ul>
+                <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
+                    <div>{{::colonist.name}}</div>
+                </li>
+            </ul>
+        </div>
     </div>
-
 
 
 </body>

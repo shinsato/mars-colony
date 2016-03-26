@@ -46,13 +46,8 @@
         }
 
         $scope.changeRoom=function(person,evt,newRoom){
-            person.room = newRoom;
-            console.log(person);
-
-            // var index = $scope.droppedObjects1.indexOf(data);
-            // if (index == -1)
-            // $scope.droppedObjects1.push(data);
-        }
+            newRoom.AddColonist(person);
+            }
 
         $scope.logThings = function(dragColonist) {
             console.log(dragColonist);
