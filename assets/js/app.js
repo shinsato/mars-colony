@@ -190,10 +190,15 @@
             farming_room.id = this.rooms.length;
             this.rooms.push(farming_room);
         };
-        Colony.prototype.AddRoom = function(){
-            var room = new Room();
-            room.id = this.rooms.length;
-            this.rooms.push(room);
+        Colony.prototype.AddRoom = function(type){
+            if(['living','farming','mining'].indexOf(type) >= 0 ){
+                var room = new Room();
+                room.id = this.rooms.length;
+                this.rooms.push(room);
+            }
+        };
+        $scope.addRoom = function(room_type){
+
         }
         Colony.prototype.Age = function(){
             var self = this;
@@ -202,7 +207,9 @@
 
             _.each(self.colonists,function(colonist){
                 colonist.Age();
-
+                if(!colonist.alive){
+                    return;
+                }
                 var room = colonist.room;
                 var colonists_in_room = colonist.room.GetColonists();
                 if(room.type == 'living'){
