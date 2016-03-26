@@ -345,6 +345,10 @@
             newRoom.AddColonist(person);
         }
 
+        $scope.createRoomandMove=function(person,evt,newRoom){
+            console.log(arguments);
+            $scope.colony.AddRoom('living', person);
+        }
 
         $scope.game = {
             'theLoop': false,
