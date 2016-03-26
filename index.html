@@ -64,7 +64,8 @@
 
     <div id="room-container">
         <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
-            {{room.id}}
+            <header>Room: {{room.id}} | Room Type: {{room.type}}</header>
+
 
             <ul>
                 <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
