@@ -44,6 +44,14 @@
             });
         }
 
+        $scope.changeRoom=function(person,evt,newRoom){
+            newRoom.AddColonist(person);
+            }
+
+        $scope.logThings = function(dragColonist) {
+            console.log(dragColonist);
+        };
+
         var Person = function(){
             this.gender = chance.gender();
             this.name = chance.name({ gender: this.gender });
@@ -69,6 +77,7 @@
             $scope.totalCount++;
         };
         Person.prototype.ChangeRoom = function(room){
+            console.log("firing");
             if(!room){
                 this.room = room;
             }
