@@ -7,14 +7,12 @@
 
         $scope.totalCount = 0;
 
-        $scope.activity = ["nothing","farming","mining"];
-
         var Room = function(){
             this.id = 0;
             this.x = 0;
             this.y = 0;
             this.z = 0;
-            this.type = 'living';
+            this.type = 'living'; //farming, mining, living
             this.capacity = 4;
             this.colonists = []
         }
@@ -66,12 +64,15 @@
             buildOut(this.endurance);
             this.uid = this.charisma.gene.concat(this.endurance.gene, this.strength.gene, this.intelligence.gene);
 
-            this.activity = "nothing";
-
             this.alive = true;
             this.withChild = false;
             this.room = 0;
             $scope.totalCount++;
+        };
+        Person.prototype.ChangeRoom = function(room){
+            if(!room){
+                this.room = room;
+            }
         };
         Person.prototype.Age = function() {
             if(!this.alive){
@@ -238,15 +239,6 @@
 
             this.alive = _.some(self.colonists, {alive: true});
         };
-
-        Colony.prototype.MoveColonistToRoom = function(colonist, room){
-            var rroom_id = colonist.room.id;
-            var room = _.findWhere(this.rooms, {id: room.id});
-            if(room.AddColonist(colonist)){
-                return true;
-            }
-            return false;
-        }
 
         $scope.onDragSucces = function(index,obj,evt) {
                 var otherObj = $scope.draggableObjects[index];
