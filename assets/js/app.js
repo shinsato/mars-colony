@@ -194,6 +194,7 @@
             if(['living','farming','mining'].indexOf(type) >= 0 ){
                 var room = new Room();
                 room.id = this.rooms.length;
+                room.type = type;
                 this.rooms.push(room);
             }
         };
