@@ -74,7 +74,11 @@
             </ul>
         </div>
     </div>
-
-
+    <div ng-show="game.colonyStarted">
+        <div>Create Room:</div>
+        <button ng-click="colony.AddRoom('living');">Living</button>
+        <button ng-click="colony.AddRoom('mining');">Mining</button>
+        <button ng-click="colony.AddRoom('farming');">Farming</button>
+    </div>
 </body>
 </html>

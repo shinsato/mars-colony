@@ -197,9 +197,6 @@
                 this.rooms.push(room);
             }
         };
-        $scope.addRoom = function(room_type){
-
-        }
         Colony.prototype.Age = function(){
             var self = this;
             self.age++;
