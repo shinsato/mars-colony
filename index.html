@@ -43,10 +43,7 @@
             <tbody ng-repeat="colonist in colony.colonists">
                 <tr ng-class="{'dead': !colonist.alive}">
                     <td>
-                        <select ng-model="colonist.room" ng-options="room.id+':'+room.type for room in colony.rooms">
-                        </select>
-                    <td>
-                        <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+                    <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                     </td>
                     <td>{{::colonist.name}}</td>
                     <td>{{colonist.age}}</td>
@@ -69,7 +66,10 @@
 
             <ul>
                 <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
-                    <div>{{::colonist.name}}</div>
+                    <div>
+                        <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+                        {{::colonist.name}}
+                    </div>
                 </li>
             </ul>
         </div>
