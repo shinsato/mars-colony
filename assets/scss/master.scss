@@ -41,4 +41,26 @@ body { font-size: 16px; width: 100%; }
         width: 20vw;
 
     }
+
+    #starter-room {
+        display: flex;
+        flex-direction:column;
+        text-align: center;
+        align-content: center;
+        justify-content: space-around;
+        .make {
+            //opacity: 0;
+            flex-grow: 1;
+            align-content: center;
+            height: 33.3%;
+            line-height: 34px;
+            transition: .2s all ease-in-out;
+        }
+
+        &:hover .make {opacity: 1;}
+
+        #make-top { background: red; }
+        #make-middle { background: orange;}
+        #make-bottom { background: yellow;}
+    }
 }
