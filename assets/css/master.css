@@ -30,3 +30,23 @@ body {
   flex-wrap: wrap; }
   #room-container .room {
     width: 20vw; }
+  #room-container #starter-room {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    justify-content: space-around; }
+    #room-container #starter-room .make {
+      flex-grow: 1;
+      align-content: center;
+      height: 33.3%;
+      line-height: 34px;
+      transition: .2s all ease-in-out; }
+    #room-container #starter-room:hover .make {
+      opacity: 1; }
+    #room-container #starter-room #make-top {
+      background: red; }
+    #room-container #starter-room #make-middle {
+      background: orange; }
+    #room-container #starter-room #make-bottom {
+      background: yellow; }
