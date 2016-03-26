@@ -14,7 +14,6 @@
             this.z = 0;
             this.type = 'living'; //farming, mining, living
             this.capacity = 4;
-            this.colonists = []
         }
         Room.prototype.AtCapacity = function(){
             var self = this;
@@ -182,6 +181,11 @@
             farming_room.id = this.rooms.length;
             this.rooms.push(farming_room);
         };
+        Colony.prototype.AddRoom = function(){
+            var room = new Room();
+            room.id = this.rooms.length;
+            this.rooms.push(room);
+        }
         Colony.prototype.Age = function(){
             var self = this;
             self.age++;
