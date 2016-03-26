@@ -45,31 +45,72 @@
             });
         };
 
+
+        //Create Room Under Construction Prototype
+        var UnderConstructionRoom = function(room_type){
+            Room.apply(this,arguments)
+            this.type = 'building';
+            this.type_to_be_built = room_type;
+            this.capacity = 1;
+            this.building_time = 0;
+        };
+        UnderConstructionRoom.prototype = Object.create(Room.prototype);
+        UnderConstructionRoom.prototype.constructor = UnderConstructionRoom;
+        UnderConstructionRoom.prototype.GetRoomType = function(){
+            if(this.type_to_be_built == 'living'){
+                var room = new LivingRoom();
+            }
+            else if(this.type_to_be_built == 'mining'){
+                var room = new MiningRoom();
+            }
+            else if(this.type_to_be_built == 'farming'){
+                var room = new FarmingRoom();
+            }
+            return room;
+        }
+        UnderConstructionRoom.prototype.GetRoomCost = function(){
+            var room = this.GetRoomType();
+            return room.cost;
+        };
+        UnderConstructionRoom.prototype.GetRoomBuildTime = function(){
+            var room = this.GetRoomType();
+            return room.build_time;
+        }
+        UnderConstructionRoom.prototype.BuildRoom = function(colonist){
+            $scope.colony.RemoveRoom(this);
+            var room = this.GetRoomType();
+            room.AddColonist(colonist);
+            $scope.colony.rooms.push(room);
+        }
+
         //Create Living Room Prototype
-        var LivingRoom = function(name){
+        var LivingRoom = function(){
             Room.apply(this,arguments)
             this.type = 'living';
             this.cost = 2;
+            this.build_time = 2;
         };
         LivingRoom.prototype = Object.create(Room.prototype);
         LivingRoom.prototype.constructor = LivingRoom;
 
         //Create Mining Room Prototype
-        var MiningRoom = function(name){
+        var MiningRoom = function(){
             Room.apply(this,arguments)
             this.type = 'mining';
             this.cost = 5;
             this.capacity = 2;
+            this.build_time = 4;
         };
         MiningRoom.prototype = Object.create(Room.prototype);
         MiningRoom.prototype.constructor = MiningRoom;
 
         //Create Farming Room Prototype
-        var FarmingRoom = function(name){
+        var FarmingRoom = function(){
             Room.apply(this,arguments)
             this.type = 'farming';
             this.cost = 3;
             this.capacity = 2;
+            this.build_time = 3;
         };
         FarmingRoom.prototype = Object.create(Room.prototype);
         FarmingRoom.prototype.constructor = FarmingRoom;
@@ -204,23 +245,25 @@
             farming_room.id = this.rooms.length;
             this.rooms.push(farming_room);
         };
-        Colony.prototype.AddRoom = function(type){
+        Colony.prototype.RemoveRoom = function(room){
+            this.rooms = _.reject(this.rooms, function(current_room){
+                if(current_room.id == room.id){
+                    return true;
+                }
+            });
+        }
+        Colony.prototype.AddRoom = function(type, colonist){
             if(['living','farming','mining'].indexOf(type) >= 0 ){
-                if(type == 'living'){
-                    var room = new LivingRoom();
-                }
-                else if(type == 'mining'){
-                    var room = new MiningRoom();
-                }
-                else if(type == 'farming'){
-                    var room = new FarmingRoom();
-                }
-                if(room.cost <= this.ore){
-                    this.ore -= room.cost;
+                var room = new UnderConstructionRoom(type);
+                if(room.GetRoomCost() <= this.ore){
+                    this.ore -= room.GetRoomCost();
                     room.id = this.rooms.length;
+                    room.AddColonist(colonist);
                     this.rooms.push(room);
+                    return true;
                 }
             }
+            return false;
         };
         Colony.prototype.Age = function(){
             var self = this;
@@ -275,6 +318,15 @@
                     else if(attempt === 0) {
                         colonist.alive = false;
                         console.log("NOOOOOOOO.");
+                    }
+                }
+                else if (room.type == "building"){
+                    if(room.building_time >= room.GetRoomBuildTime()){
+                        room.BuildRoom();
+                    }
+                    else{
+                        //@todo Add in roll check logic here
+                        room.building_time++;
                     }
                 }
             });
