@@ -45,6 +45,19 @@
             });
         }
 
+        $scope.changeRoom=function(person,evt,newRoom){
+            person.room = newRoom;
+            console.log(person);
+
+            // var index = $scope.droppedObjects1.indexOf(data);
+            // if (index == -1)
+            // $scope.droppedObjects1.push(data);
+        }
+
+        $scope.logThings = function(dragColonist) {
+            console.log(dragColonist);
+        };
+
         var Person = function(){
             this.gender = chance.gender();
             this.name = chance.name({ gender: this.gender });
@@ -70,6 +83,7 @@
             $scope.totalCount++;
         };
         Person.prototype.ChangeRoom = function(room){
+            console.log("firing");
             if(!room){
                 this.room = room;
             }

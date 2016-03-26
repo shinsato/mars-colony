@@ -62,17 +62,18 @@
         </table>
     </div>
 
-    <!-- <div id="colony-container">
-        <div class="room room-1">
-            <div class="item" dnd-draggable dnd-effect-allowed="move"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+    <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)">
+        {{room.id}}
 
-        </div>
-        <div class="room room-2"></div>
-        <div class="room room-3"></div>
-        <div class="room room-4"></div>
+        <ul>
+            <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
+                <div>{{::colonist.name}}</div>
+            </li>
+        </ul>
+    </div>
 
-    </div> -->
+
+
 </body>
 </html>
+,
