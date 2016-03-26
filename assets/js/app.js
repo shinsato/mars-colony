@@ -77,12 +77,10 @@
             return room.build_time;
         }
         UnderConstructionRoom.prototype.BuildRoom = function(colonist){
-            $scope.colony.RemoveRoom(this);
             var room = this.GetRoomType();
             room.id = this.id;
             room.AddColonist(colonist);
-            console.log(colonist);
-            $scope.colony.rooms.push(room);
+            $scope.colony.ReplaceRoom(this, room);
         }
 
         //Create Living Room Prototype
@@ -253,8 +251,16 @@
                     return true;
                 }
             });
-            console.log(this.rooms);
-        }
+        };
+        Colony.prototype.ReplaceRoom = function(find_room, replace_room){
+            for(var i in this.rooms){
+                if(this.rooms[i].id == find_room.id){
+                    this.rooms[i] = replace_room;
+                    return true;
+                }
+            }
+            return false;
+        };
         Colony.prototype.AddRoom = function(type, colonist){
             if(['living','farming','mining'].indexOf(type) >= 0 ){
                 var room = new UnderConstructionRoom(type);
