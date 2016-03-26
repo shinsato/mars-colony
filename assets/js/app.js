@@ -79,7 +79,9 @@
         UnderConstructionRoom.prototype.BuildRoom = function(colonist){
             $scope.colony.RemoveRoom(this);
             var room = this.GetRoomType();
+            room.id = this.id;
             room.AddColonist(colonist);
+            console.log(colonist);
             $scope.colony.rooms.push(room);
         }
 
@@ -211,7 +213,7 @@
             this.colonists = [];
             this.couples = [];
             this.food = num_colonists * 7;
-            this.ore = 0;
+            this.ore = 100;
             this.rooms = [];
 
             var room_count = 0;
@@ -251,10 +253,12 @@
                     return true;
                 }
             });
+            console.log(this.rooms);
         }
         Colony.prototype.AddRoom = function(type, colonist){
             if(['living','farming','mining'].indexOf(type) >= 0 ){
                 var room = new UnderConstructionRoom(type);
+
                 if(room.GetRoomCost() <= this.ore){
                     this.ore -= room.GetRoomCost();
                     room.id = this.rooms.length;
@@ -322,7 +326,7 @@
                 }
                 else if (room.type == "building"){
                     if(room.building_time >= room.GetRoomBuildTime()){
-                        room.BuildRoom();
+                        room.BuildRoom(colonist);
                     }
                     else{
                         //@todo Add in roll check logic here
@@ -345,9 +349,8 @@
             newRoom.AddColonist(person);
         }
 
-        $scope.createRoomandMove=function(person,evt,newRoom){
-            console.log(arguments);
-            $scope.colony.AddRoom('living', person);
+        $scope.createRoom=function(person, type){
+            $scope.colony.AddRoom(type, person);
         }
 
         $scope.game = {

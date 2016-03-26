@@ -59,9 +59,11 @@
         </table>
     </div>
 
-    <div id="room-container">
+    <div id="room-container" ng-show="game.colonyStarted">
         <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
             <header>Room: {{room.id}} | Room Type: {{room.type}}</header>
+            <div ng-show="room.type == 'building'">Building Time: {{room.building_time}}</div>
+            <div ng-show="room.type == 'building'">Room Type: {{room.type_to_be_built}}</div>
 
 
             <ul>
@@ -74,16 +76,10 @@
             </ul>
         </div>
         <div id="starter-room" class="room">
-            <div id="make-top" class="make" ng-drop="true"  ng-drop-success="createRoomandMove($data,$event)">Farm</div>
-            <div id="make-middle" class="make">Mine</div>
-            <div id="make-bottom" class="make">Living Room</div>
+            <div id="make-top" class="make" ng-drop="true" ng-drop-success="createRoom($data,'farming')">Farm</div>
+            <div id="make-middle" class="make" ng-drop="true" ng-drop-success="createRoom($data,'mining')">Mine</div>
+            <div id="make-bottom" class="make" ng-drop="true"  ng-drop-success="createRoom($data,'living')">Living Room</div>
         </div>
-    </div>
-    <div ng-show="game.colonyStarted">
-        <div>Create Room:</div>
-        <button ng-click="colony.AddRoom('living');">Living</button>
-        <button ng-click="colony.AddRoom('mining');">Mining</button>
-        <button ng-click="colony.AddRoom('farming');">Farming</button>
     </div>
 </body>
 </html>
