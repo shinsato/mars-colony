@@ -26,6 +26,7 @@ body {
   float: left; }
 
 #room-container {
-  display: flex; }
+  display: flex;
+  flex-wrap: wrap; }
   #room-container .room {
     width: 20vw; }
