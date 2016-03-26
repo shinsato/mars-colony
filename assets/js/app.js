@@ -14,7 +14,8 @@
             this.z = 0;
             this.type = 'living'; //farming, mining, living
             this.capacity = 4;
-        }
+            this.cost = 2;
+        };
         Room.prototype.AtCapacity = function(){
             var self = this;
             var capacity = _.reduce($scope.colony.colonists,function(count, colonist){
@@ -27,14 +28,14 @@
                 return true;
             }
             return false;
-        }
+        };
         Room.prototype.AddColonist = function(colonist){
             if(!this.AtCapacity()){
                 colonist.room = this;
                 return true;
             }
             return false;
-        }
+        };
         Room.prototype.GetColonists = function(){
             var self = this;
             return _.filter($scope.colony.colonists,function(colonist){
@@ -42,15 +43,36 @@
                     return colonist;
                 }
             });
-        }
-
-        $scope.changeRoom=function(person,evt,newRoom){
-            newRoom.AddColonist(person);
-            }
-
-        $scope.logThings = function(dragColonist) {
-            console.log(dragColonist);
         };
+
+        //Create Living Room Prototype
+        var LivingRoom = function(name){
+            Room.apply(this,arguments)
+            this.type = 'living';
+            this.cost = 2;
+        };
+        LivingRoom.prototype = Object.create(Room.prototype);
+        LivingRoom.prototype.constructor = LivingRoom;
+
+        //Create Mining Room Prototype
+        var MiningRoom = function(name){
+            Room.apply(this,arguments)
+            this.type = 'mining';
+            this.cost = 5;
+            this.capacity = 2;
+        };
+        MiningRoom.prototype = Object.create(Room.prototype);
+        MiningRoom.prototype.constructor = MiningRoom;
+
+        //Create Farming Room Prototype
+        var FarmingRoom = function(name){
+            Room.apply(this,arguments)
+            this.type = 'farming';
+            this.cost = 3;
+            this.capacity = 2;
+        };
+        FarmingRoom.prototype = Object.create(Room.prototype);
+        FarmingRoom.prototype.constructor = FarmingRoom;
 
         var Person = function(){
             this.gender = chance.gender();
@@ -75,12 +97,6 @@
             this.withChild = false;
             this.room = 0;
             $scope.totalCount++;
-        };
-        Person.prototype.ChangeRoom = function(room){
-            console.log("firing");
-            if(!room){
-                this.room = room;
-            }
         };
         Person.prototype.Age = function() {
             if(!this.alive){
@@ -158,7 +174,7 @@
             this.rooms = [];
 
             var room_count = 0;
-            var room = new Room();
+            var room = new LivingRoom();
             room.id = this.rooms.length;
             for (var i=1; i<=num_colonists; i++){
                 var person = new Person();
@@ -170,7 +186,7 @@
                 }
                 else {
                     this.rooms.push(room);
-                    room = new Room();
+                    room = new LivingRoom();
                     room_count = 0;
                     room.id = this.rooms.length;
                     person.room = room;
@@ -180,22 +196,30 @@
             this.rooms.push(room);
 
             //Make mining and farming rooms
-            var mining_room = new Room();
-            mining_room.type = 'mining';
+            var mining_room = new MiningRoom();
             mining_room.id = this.rooms.length;
             this.rooms.push(mining_room);
 
-            var farming_room = new Room();
-            farming_room.type = 'farming';
+            var farming_room = new FarmingRoom();
             farming_room.id = this.rooms.length;
             this.rooms.push(farming_room);
         };
         Colony.prototype.AddRoom = function(type){
             if(['living','farming','mining'].indexOf(type) >= 0 ){
-                var room = new Room();
-                room.id = this.rooms.length;
-                room.type = type;
-                this.rooms.push(room);
+                if(type == 'living'){
+                    var room = new LivingRoom();
+                }
+                else if(type == 'mining'){
+                    var room = new MiningRoom();
+                }
+                else if(type == 'farming'){
+                    var room = new FarmingRoom();
+                }
+                if(room.cost <= this.ore){
+                    this.ore -= room.cost;
+                    room.id = this.rooms.length;
+                    this.rooms.push(room);
+                }
             }
         };
         Colony.prototype.Age = function(){
@@ -263,7 +287,11 @@
                 var otherIndex = $scope.draggableObjects.indexOf(obj);
                 $scope.draggableObjects[index] = obj;
                 $scope.draggableObjects[otherIndex] = otherObj;
-            }
+            };
+
+        $scope.changeRoom=function(person,evt,newRoom){
+            newRoom.AddColonist(person);
+        }
 
 
         $scope.game = {
