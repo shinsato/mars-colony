@@ -117,7 +117,8 @@
 
         var Person = function(){
             this.gender = chance.gender();
-            this.name = chance.name({ gender: this.gender });
+            this.first_name = chance.first({ gender: this.gender });
+            this.last_name = chance.last();
             this.age = _.random(15,30);
             //
             // this.endurance = _.random(3,6);
@@ -155,6 +156,7 @@
                     var person = new Person();
                     person.id = $scope.colony.colonists.length;
                     person.age = 0;
+                    person.last_name = this.last_name;
                     $scope.colony.colonists.push(person);//@todo link newborn to parents
                     room.AddColonist(person);
                 }

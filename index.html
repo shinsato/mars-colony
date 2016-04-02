@@ -45,7 +45,7 @@
                     <td>
                     <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                     </td>
-                    <td>{{::colonist.name}}</td>
+                    <td>{{::colonist.first_name}} {{::colonist.last_name}}</td>
                     <td>{{colonist.age}}</td>
                     <td>{{colonist.activity}}</td>
                     <td>{{colonist.endurance.attr}}</td>
@@ -70,7 +70,7 @@
                 <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
                     <div>
                         <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
-                        {{::colonist.name}}
+                        {{::colonist.first_name}} {{::colonist.last_name}}
                         </div>
                 </li>
             </ul>
