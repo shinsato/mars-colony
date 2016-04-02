@@ -60,3 +60,6 @@ body {
 #control-panel {
   flex-grow: 1;
   width: 20em; }
+
+.active {
+  background: #D1F1FF; }

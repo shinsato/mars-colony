@@ -71,7 +71,7 @@
 
             <ul>
                 <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
-                    <div>
+                    <div ng-mouseenter="colonist.active = true" ng-mouseleave="colonist.active=false" ng-class="{'active': colonist.active}">
                         <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                         {{::colonist.first_name}} {{::colonist.last_name}}
                         </div>
@@ -89,7 +89,7 @@
 
     <div id="control-panel">
         <div id="colony-roster">
-            <div ng-repeat="colonist in colony.colonists" ng-class="{'dead': !colonist.alive}">
+            <div ng-repeat="colonist in colony.colonists" ng-mouseenter="colonist.active = true" ng-mouseleave="colonist.active=false" ng-class="{'dead': !colonist.alive, 'active': colonist.active}">
                 <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                 {{::colonist.first_name}} {{::colonist.last_name}}
                 {{colonist.age}}

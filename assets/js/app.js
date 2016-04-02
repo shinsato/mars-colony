@@ -138,6 +138,7 @@
             this.alive = true;
             this.withChild = false;
             this.room = 0;
+            this.active = false;
             $scope.totalCount++;
         };
         Person.prototype.Age = function() {
@@ -319,23 +320,18 @@
                     var farmed = colonist.RollStrength();
                     if(farmed > 5)
                     self.food++;
-                    console.log("Food Farmed", farmed);
                 }
                 else if(room.type == "mining") {
-                    console.log("Mining!");
                     var attempt = colonist.RollStrength();
                     if(attempt > 7) {
                         self.ore++;
-                        console.log("mining success!");
                     }
                     else if (attempt >= 2) {
                         colonist.endurance.attr--;
-                        console.log("Ouch.");
 
                     }
                     else if(attempt === 0) {
                         colonist.alive = false;
-                        console.log("NOOOOOOOO.");
                     }
                 }
                 else if (room.type == "building"){
@@ -361,10 +357,13 @@
 
         $scope.changeRoom=function(person,evt,newRoom){
             newRoom.AddColonist(person);
+            person.active = false;
         }
 
         $scope.createRoom=function(person, type){
             $scope.colony.AddRoom(type, person);
+            console.log(arguments);
+            person.active = false;
         }
 
         $scope.game = {
