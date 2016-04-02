@@ -13,10 +13,13 @@
 
         $scope.changeRoom=function(person,evt,newRoom){
             newRoom.AddColonist(person);
+            person.active = false;
         }
 
         $scope.createRoom=function(person, type){
             $scope.colony.AddRoom(type, person);
+            console.log(arguments);
+            person.active = false;
         }
 
         $scope.game = {

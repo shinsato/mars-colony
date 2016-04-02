@@ -23,6 +23,7 @@ var Person = function(colony){
     buildOut(this.endurance);
     this.uid = this.charisma.gene.concat(this.endurance.gene, this.strength.gene, this.intelligence.gene);
 
+    this.active = false;
     this.alive = true;
     this.withChild = false;
     this.room = 0;
