@@ -264,6 +264,9 @@
             return false;
         };
         Colony.prototype.AddRoom = function(type, colonist){
+            if(colonist.age < 16){
+                return false;
+            }
             if(['living','farming','mining'].indexOf(type) >= 0 ){
                 var room = new UnderConstructionRoom(type);
 
@@ -284,7 +287,10 @@
 
             _.each(self.colonists,function(colonist){
                 colonist.Age();
-                if(!colonist.alive){
+                if(!colonist.alive){//The dead dont work or reproduce, cuz that'd be disgusting
+                    return;
+                }
+                if(colonist.age < 16){ //Underage cant work or reproduce
                     return;
                 }
                 var room = colonist.room;
