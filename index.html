@@ -43,7 +43,7 @@
             <tbody ng-repeat="colonist in colony.colonists">
                 <tr ng-class="{'dead': !colonist.alive}">
                     <td>
-                    <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+                    <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                     </td>
                     <td>{{::colonist.first_name}} {{::colonist.last_name}}</td>
                     <td>{{colonist.age}}</td>
@@ -59,26 +59,36 @@
         </table>
     </div>
 
-    <div id="room-container" ng-show="game.colonyStarted">
-        <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
-            <header>Room: {{room.id}} | Room Type: {{room.type}}</header>
-            <div ng-show="room.type == 'building'">Building Time: {{room.building_time}}</div>
-            <div ng-show="room.type == 'building'">Room Type: {{room.type_to_be_built}}</div>
+    <div id="mars">
+        <div id="room-container" ng-show="game.colonyStarted">
+            <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
+                <header>Room: {{room.id}} | Room Type: {{room.type}}</header>
+                <div ng-show="room.type == 'building'">Building Time: {{room.building_time}}</div>
+                <div ng-show="room.type == 'building'">Room Type: {{room.type_to_be_built}}</div>
 
 
             <ul>
                 <li ng-repeat="colonist in colony.colonists" ng-if="colonist.room === room" ng-drag="true"  ng-drag-data="colonist">
                     <div>
-                        <span ng-class="{'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+                        <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
                         {{::colonist.first_name}} {{::colonist.last_name}}
                         </div>
                 </li>
             </ul>
-        </div>
-        <div id="starter-room" class="room">
-            <div id="make-top" class="make" ng-drop="true" ng-drop-success="createRoom($data,'farming')">Farm</div>
-            <div id="make-middle" class="make" ng-drop="true" ng-drop-success="createRoom($data,'mining')">Mine</div>
-            <div id="make-bottom" class="make" ng-drop="true"  ng-drop-success="createRoom($data,'living')">Living Room</div>
+
+            </div>
+            <div id="starter-room" class="room">
+                <div id="make-top" class="make" ng-drop="true" ng-drop-success="createRoom($data,'farming')">Farm</div>
+                <div id="make-middle" class="make" ng-drop="true" ng-drop-success="createRoom($data,'mining')">Mine</div>
+                <div id="make-bottom" class="make" ng-drop="true"  ng-drop-success="createRoom($data,'living')">Living Room</div>
+            </div>
+    </div>
+
+    <div id="control-panel">
+        <div ng-repeat="colonist in colony.colonists" ng-class="{'dead': !colonist.alive}">
+            <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+            {{::colonist.first_name}} {{::colonist.last_name}}
+            {{colonist.age}}
         </div>
     </div>
 </body>
