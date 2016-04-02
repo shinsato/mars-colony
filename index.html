@@ -32,9 +32,11 @@
         <button ng-click="beginColony()">Start Colony</button>
     </div>
     <div>
-        <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} |  Ore Mined: {{colony.ore}}</h1>
-        <h2 style="color:red;" ng-show="game.started && !colony.alive">Everyone's dead. Try again?</h2>
-        <table ng-show="game.colonyStarted">
+        <header>
+            <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} |  Ore Mined: {{colony.ore}}</h1>
+            <h2 style="color:red;" ng-show="game.started && !colony.alive">Everyone's dead. Try again?</h2>
+        </header>
+        <!-- <table ng-show="game.colonyStarted">
             <thead>
                 <tr>
                     <td>Room</td><td>Gender</td><td>Name</td><td>Age</td><td>Farming</td><td>Endurance</td><td>Intelligence</td><td>Charisma</td><td>DNA/UID</td><td>With Child</td>
@@ -51,12 +53,12 @@
                     <td>{{colonist.endurance.attr}}</td>
                     <td>{{::colonist.intelligence.attr}}</td>
                     <td>{{::colonist.charisma.attr}}</td>
-                    <!-- <td>{{::colonist.uid}}</td> -->
+                    <td>{{::colonist.uid}}</td>
                     <td><em style="color: #bcbcbc;">Commented Out</td>
                     <td>{{colonist.withChild}}</td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </div>
 
     <div id="mars">
@@ -84,12 +86,20 @@
             </div>
     </div>
 
+
     <div id="control-panel">
-        <div ng-repeat="colonist in colony.colonists" ng-class="{'dead': !colonist.alive}">
-            <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
-            {{::colonist.first_name}} {{::colonist.last_name}}
-            {{colonist.age}}
+        <div id="colony-roster">
+            <div ng-repeat="colonist in colony.colonists" ng-class="{'dead': !colonist.alive}">
+                <span ng-class="{'fa-child': colonist.age <= 16 && colonist.alive, 'fa-female': colonist.alive && colonist.gender == 'Female', 'fa-male': colonist.alive && colonist.gender == 'Male', 'fa-times-circle-o': !colonist.alive}"></span>
+                {{::colonist.first_name}} {{::colonist.last_name}}
+                {{colonist.age}}
+            </div>
         </div>
     </div>
+
+</div>
+
+
+
 </body>
 </html>

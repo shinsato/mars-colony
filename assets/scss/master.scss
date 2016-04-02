@@ -42,7 +42,7 @@ body { font-size: 16px; width: 100%; }
 
     }
 
-    #starter-room {
+        #starter-room {
         display: flex;
         flex-direction:column;
         text-align: center;
@@ -63,4 +63,18 @@ body { font-size: 16px; width: 100%; }
         #make-middle { background: orange;}
         #make-bottom { background: yellow;}
     }
+}
+
+
+#mars {
+    display: flex;
+    }
+#room-container {
+    flex-grow: auto;
+    }
+#control-panel {
+    flex-grow: 1;
+    width: 20em;
+
+
 }

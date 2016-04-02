@@ -50,3 +50,13 @@ body {
       background: orange; }
     #room-container #starter-room #make-bottom {
       background: yellow; }
+
+#mars {
+  display: flex; }
+
+#room-container {
+  flex-grow: auto; }
+
+#control-panel {
+  flex-grow: 1;
+  width: 20em; }
