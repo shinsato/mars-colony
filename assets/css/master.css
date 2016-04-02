@@ -2,6 +2,9 @@ body {
   font-size: 16px;
   width: 100%; }
 
+h1, h2, h3 {
+  font-family: "helvetica", "arial", san-serif; }
+
 .room {
   border: 1px solid #ccc;
   display: block;
