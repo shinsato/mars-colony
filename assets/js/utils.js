@@ -33,7 +33,6 @@ var isArray = function (obj) {
     };
 
 buildOut = function (that) {
-    console.log(that);
     that.gene = [];
     for (i = 0; i < 4; i++) {
         // if (window.CP.shouldStopExecution(3)) {
