@@ -30,6 +30,11 @@
             'numColonists': 6,
         };
 
+        $scope.createMap = function(){
+            $scope.map = new Map(35,35);
+            $scope.map.generateMap();
+        }
+
         $scope.beginColony = function(){
             $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists);
             $scope.game.started = true;
