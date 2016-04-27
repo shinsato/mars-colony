@@ -266,17 +266,13 @@ input[type="range"]:active::-webkit-slider-thumb {
   -webkit-transform: scale(1.3);
           transform: scale(1.3); }
 
-.flat {
+.hexo div.flat {
   background: #EB7C31; }
-
-.mountian {
+.hexo div.mountian {
   background: #512F19; }
-
-.hill {
+.hexo div.hill {
   background: #EB9F4C; }
-
-.ore {
+.hexo div.ore {
   background: #EB9F4C; }
-
-.ice {
+.hexo div.ice {
   background: #FFFFFF; }
