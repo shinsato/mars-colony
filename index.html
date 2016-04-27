@@ -37,10 +37,10 @@
         <button ng-click="beginColony()">Start Colony</button>
     </div>
     <div>
-        <header>
+        <!-- <header>
             <h1 ng-show="game.colonyStarted">Colony: {{::colony.name}} Years Active: {{colony.age}} Food Available: {{colony.food}} |  Ore Mined: {{colony.ore}}</h1>
             <h2 style="color:red;" ng-show="game.started && !colony.alive">Everyone's dead. Try again?</h2>
-        </header>
+        </header> -->
         <!-- <table ng-show="game.colonyStarted">
             <thead>
                 <tr>
@@ -66,8 +66,8 @@
         </table> -->
     </div>
 
-    <div id="mars">
-        <div id="room-container" ng-show="game.colonyStarted">
+    <!-- <div id="mars"> -->
+        <!-- <div id="room-container" ng-show="game.colonyStarted">
             <div ng-repeat="room in colony.rooms" ng-drop="true" ng-drop-success="changeRoom($data, $event, room)" class="room">
                 <header>Room: {{room.id}} | Room Type: {{room.type}}</header>
                 <div ng-show="room.type == 'building'">Building Time: {{room.building_time}}</div>
@@ -100,9 +100,16 @@
                 {{colonist.age}}
             </div>
         </div>
-    </div>
+    </div> -->
 
-</div>
+    <div class="hexo-map">
+		<div class="hexo" ng-repeat="plot in map" ng-class="setClass(plot, active)" ng-click="click(plot, selected)">
+			<div>{{plot.y}}.{{plot.x}}</div>
+		</div>
+	</div>
+
+
+<!-- </div> -->
 
 
 

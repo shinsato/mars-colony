@@ -1,0 +1,183 @@
+$dark: #343439;
+$light: #fff;
+$base: #2E2E30;
+$alert: #FF3B80;
+$warning: #FFF048;
+$ok: #9BCE5F;
+$info: #05b0f0;
+$timing: .3s;
+
+// don't need this SVG, using clip-path instead
+// @function hex($color: #E43336){
+//   @return url("data:image/svg+xml;utf-8,<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"50.3012702 0 93.6025404 25 93.6025404 75 50.3012702 100 7 75 7 25 \" fill-rule=\"evenodd\" fill=\"#{$color}\"></polygon></svg>") no-repeat 50% 50%;
+// }
+
+.hexo-map {
+	display: flex;
+	flex-flow: row wrap;
+	position: relative;
+	user-select: none;
+}
+.hexo {
+	flex: none;
+	background-size: cover;
+	width: 1em;
+	height: 1em;
+	display: flex;
+	font-size: 10vw;
+	position: relative;
+	cursor: default;
+	z-index: 0;
+	margin-bottom: -.15em;
+	color: lighten($base, 10%);
+	&:not(:nth-child(20n+11)) {
+		&:not(:nth-child(20n+12)) {
+			&:not(:nth-child(20n+13)) {
+				&:not(:nth-child(20n+14)) {
+					&:not(:nth-child(20n+15)) {
+						&:not(:nth-child(20n+16)) {
+							&:not(:nth-child(20n+17)) {
+								&:not(:nth-child(20n+18)) {
+									&:not(:nth-child(20n+19)) {
+										&:not(:nth-child(20n+20)) {
+											transform: translateX(50%);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&:nth-child(20n-10) {
+		transform: scale(0) !important;
+		pointer-events: none;
+	}
+	> div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: .15em;
+		background-color: $dark;
+		clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%); // hex
+        -webkit-clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: scale(1);
+		transition: transform .35s cubic-bezier(.5,0,.2,1.6), background 2s ease-out, color 2s ease-out;
+	}
+	&:not(.occupied) {
+		&.near:hover > div {
+			transform: scale(1.5);
+            z-index: 400;
+		}
+		// &:not(.near):hover > div {
+		// 	transform: scale(.85);
+		// }
+	}
+	&:hover {
+		z-index: 2;
+		> div {
+			background-color: $alert; //mix($alert, $base);
+			color: mix($alert, $light);
+			transition:  transform .35s cubic-bezier(.5,0,.2,1.6), z-index .3s linear .8s;
+		}
+	}
+	&.active {
+		z-index: 2;
+		> div {
+			background-color: $alert;
+			color: mix($alert, $light);
+		}
+	}
+	&.near {
+		z-index: 4;
+		cursor: pointer;
+		> div {
+			background-color: mix(mix($alert, $info), $base);
+			color: mix(mix($alert, $info), $base, 80%);
+		}
+	}
+	&.occupied {
+		z-index: 3;
+		cursor: pointer;
+		> div {
+			background-color: $info;
+			color: mix($info, $light);
+		}
+	}
+	&.dead {
+		z-index: 0;
+		> div {
+			background-color: $base;
+			color: $dark;
+		}
+	}
+}
+
+// BORING
+* {box-sizing: border-box;}
+html,
+body {
+  background: $base;
+	color: $light;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 5vmin;
+}
+
+.tools {
+	background: $dark;
+	padding: .5em;
+	margin: 0 0 .5em 0;
+	display: flex;
+	align-items: center;
+	> * {
+		flex: 1;
+		text-align: center;
+	}
+}
+
+input[type="range"] {
+	appearance: none;
+	outline: none;
+  padding: 0;
+  border: 0;
+	font-size: 1em;
+	width: 100%;
+  border-radius: 1em;
+  background: rgba(18, 21, 22, 0.3);
+}
+input[type="range"]::-webkit-slider-thumb {
+	appearance: none;
+	width: 1em;
+	height: 1em;
+	border: none;
+	border-radius: 1em;
+	background: $light;
+	background-image: none;
+	transform: scale(0.8);
+	transition: .3s ease-out;
+}
+input[type="range"]:focus::-webkit-slider-thumb,
+input[type="range"]:active::-webkit-slider-thumb {
+	appearance: none;
+	background: mix($alert, $warning);
+	transform: scale(1.3);
+}
+
+
+.flat { background: #EB7C31;}
+.mountian { background: #512F19; }
+.hill {background: #EB9F4C;}
+.ore {background: #EB9F4C;}
+.ice { background: #FFFFFF;}
