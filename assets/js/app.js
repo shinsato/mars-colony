@@ -59,6 +59,45 @@
                 $scope.startColony();
             }
         }
+
+
+            $scope.rows = 35;
+            $scope.startup = function(rows) {
+
+            var startY = _.random(0, rows - 1);
+            var startX = _.random(0, (!!(startY % 2) ? 9 : 8));
+            $scope.active = {
+            y: startY,
+            x: startX
+            };
+
+            $scope.selected = [$scope.active];
+
+            };
+
+            $scope.startup($scope.rows);
+
+            $scope.map = _buildMap($scope.rows);
+
+            $scope.click = function(plot, selected){
+            if (!_hit(selected, plot)) {
+            _.each(selected, function(lot) {
+                if (_possibles(plot, lot)) {
+                    selected.push(angular.copy(plot));
+                }
+            });
+            }
+            };
+
+            $scope.setClass = function(plot, active) {
+            return _setClass(plot, active, $scope.selected);
+            };
+
+            $scope.$watch('rows', function(n) {
+            $scope.map = _buildMap(n);
+            });
+
+
     }])
     .controller('manageCrew', ['$scope', function($scope) {
 

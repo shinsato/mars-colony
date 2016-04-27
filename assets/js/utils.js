@@ -45,3 +45,67 @@ buildOut = function (that) {
     that.attr = getAverageFromNumArr(that.gene, 1);
     that.vari = getVariance(that.gene, 1);
     };
+
+
+
+    	var _test = function(p, a) {
+    		return (
+    			(p.y === a.y - 1 && p.x === a.x) ||
+    			(p.y === a.y + 1 && p.x === a.x) ||
+    			(p.y === a.y && p.x === a.x + 1) ||
+    			(p.y === a.y && p.x === a.x - 1)
+    		);
+    	};
+
+    	var _possibles = function(p, a) {
+    		if (!!(a.y % 2)) {
+    			if (_test(p, a) || (p.y === a.y - 1 && p.x === a.x - 1) || (p.y === a.y + 1 && p.x === a.x - 1)) {
+    				return a;
+    			}
+    		} else {
+    			if (_test(p, a) || (p.y === a.y - 1 && p.x === a.x + 1) || (p.y === a.y + 1 && p.x === a.x + 1)) {
+    				return a;
+    			}
+    		}
+    	};
+
+    	var _index = function(list, item){
+    		return _.findIndex(list, function(lot) {
+    			return item.x === lot.x && item.y === lot.y;
+    		});
+    	};
+
+    	var _hit = function(list, item) {
+    		var index = _index(list, item);
+    		return (index > -1);
+    	};
+
+    	var _setClass = function(plot, active, selected) {
+    		var cls = [];
+    		if (plot.y === active.y && plot.x === active.x) {
+    			cls.push('active');
+    		}
+
+    		if (_hit(selected, plot)) {
+    			cls.push('occupied');
+    		} else {
+    			_.each(selected, function(lot) {
+    				if (_possibles(plot, lot)) {
+    					cls.push('near');
+    				}
+    			});
+    		}
+
+    		return cls.join(' ');
+    	};
+
+    	var _buildMap = function(rows) {
+    		return _.flatten(_.times(rows, function(y) {
+    			return _.times(10, function(x) {
+    				return {
+    					x: x,
+    					y: y
+    				};
+    			});
+    		}));
+    	};
