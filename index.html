@@ -103,8 +103,8 @@
     </div> -->
 
     <div class="hexo-map">
-		<div class="hexo" ng-repeat="plot in map" ng-class="setClass(plot, active)" ng-click="click(plot, selected)">
-			<div>{{plot.y}}.{{plot.x}}</div>
+		<div class="hexo" ng-repeat="tile in map.tiles" ng-class="setClass(plot, active)" ng-click="click(plot, selected)">
+			<div ng-class="tile.type">{{tile.y}}.{{tile.x}}</div>
 		</div>
 	</div>
 

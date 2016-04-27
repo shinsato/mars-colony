@@ -31,11 +31,12 @@
         };
 
         $scope.createMap = function(){
-            $scope.map = new Map(35,35);
+            $scope.map = new Map(15,15);//35,35
             $scope.map.generateMap();
-        }
+        };
 
         $scope.beginColony = function(){
+            $scope.createMap();
             $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists);
             $scope.game.started = true;
             $scope.game.colonyStarted = true;
