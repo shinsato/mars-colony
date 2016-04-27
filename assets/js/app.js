@@ -33,11 +33,12 @@
         $scope.createMap = function(){
             $scope.map = new Map(15,15);//35,35
             $scope.map.generateMap();
+            $scope.activeTile = $scope.selectedTile = $scope.map.tiles[Math.floor(Math.random() * $scope.map.tiles.length)];
+            console.log($scope.activeTile);
         };
 
-        $scope.beginColony = function(){
-            $scope.createMap();
-            $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists);
+        $scope.beginColony = function(tile){
+            $scope.colony = new Colony($scope.game.colonyName, $scope.game.numColonists, tile);
             $scope.game.started = true;
             $scope.game.colonyStarted = true;
             $scope.startColony();
@@ -67,41 +68,20 @@
         }
 
 
-            $scope.rows = 35;
-            $scope.startup = function(rows) {
-
-            var startY = _.random(0, rows - 1);
-            var startX = _.random(0, (!!(startY % 2) ? 9 : 8));
-            $scope.active = {
-            y: startY,
-            x: startX
-            };
-
-            $scope.selected = [$scope.active];
-
-            };
-
-            $scope.startup($scope.rows);
-
-            $scope.map = _buildMap($scope.rows);
-
-            $scope.click = function(plot, selected){
-            if (!_hit(selected, plot)) {
-            _.each(selected, function(lot) {
-                if (_possibles(plot, lot)) {
-                    selected.push(angular.copy(plot));
-                }
-            });
+        $scope.tileClick = function(tile, selected){
+            if (!_hit(selected, tile)) {
+                _.each(selected, function(lot) {
+                    if (_possibles(tile, lot)) {
+                        selected.push(angular.copy(plot));
+                    }
+                });
             }
-            };
+        };
 
-            $scope.setClass = function(plot, active) {
-            return _setClass(plot, active, $scope.selected);
-            };
+        $scope.tileSetClass = function(tile, active) {
+            return _setClass(tile, active, $scope.selectedTile);
+        };
 
-            $scope.$watch('rows', function(n) {
-            $scope.map = _buildMap(n);
-            });
 
 
     }])

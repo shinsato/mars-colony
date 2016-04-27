@@ -1,4 +1,4 @@
-var Colony = function(name, num_colonists) {
+var Colony = function(name, num_colonists, tile) {
     num_colonists = num_colonists || 6;
     this.starterCount = num_colonists;
     this.name = name;
@@ -10,7 +10,7 @@ var Colony = function(name, num_colonists) {
     this.rooms = [];
 
     var room_count = 0;
-    var room = new LivingRoom(this);
+    var room = new LivingRoom(this, tile);
     for (var i=1; i<=num_colonists; i++){
         var person = new Person(this);
 

@@ -1,9 +1,7 @@
-var Room = function(colony){
+var Room = function(colony, tile){
     this.id = colony.rooms.length;
     this.colony = colony;
-    this.x = 0;
-    this.y = 0;
-    this.z = 0;
+    this.tile = tile;
     this.type = 'living'; //farming, mining, living
     this.capacity = 4;
     this.cost = 2;
@@ -50,17 +48,17 @@ var UnderConstructionRoom = function(colony, room_type){
     this.capacity = 1;
     this.building_time = 0;
 };
-UnderConstructionRoom.prototype = Object.create(Room.prototype);
+UnderConstructionRoom.prototype = Object.create(Room.prototype, tile);
 UnderConstructionRoom.prototype.constructor = UnderConstructionRoom;
 UnderConstructionRoom.prototype.GetRoomType = function(){
     if(this.type_to_be_built == 'living'){
-        var room = new LivingRoom(this.colony);
+        var room = new LivingRoom(this.colony, this.tile);
     }
     else if(this.type_to_be_built == 'mining'){
-        var room = new MiningRoom(this.colony);
+        var room = new MiningRoom(this.colony, this.tile);
     }
     else if(this.type_to_be_built == 'farming'){
-        var room = new FarmingRoom(this.colony);
+        var room = new FarmingRoom(this.colony, this.tile);
     }
     return room;
 }
@@ -75,15 +73,17 @@ UnderConstructionRoom.prototype.GetRoomBuildTime = function(){
 UnderConstructionRoom.prototype.BuildRoom = function(colonist){
     var room = this.GetRoomType();
     room.id = this.id;
+    room.tile = this.tile;
     room.AddColonist(colonist);
     this.colony.ReplaceRoom(this, room);
 }
 
 //Create Living Room Prototype
-var LivingRoom = function(colony){
+var LivingRoom = function(colony, tile){
     Room.apply(this,arguments);
     this.id = colony.rooms.length;
     this.colony = colony;
+    this.tile = tile;
     this.type = 'living';
     this.cost = 2;
     this.build_time = 2;
@@ -92,10 +92,11 @@ LivingRoom.prototype = Object.create(Room.prototype);
 LivingRoom.prototype.constructor = LivingRoom;
 
 //Create Mining Room Prototype
-var MiningRoom = function(colony){
+var MiningRoom = function(colony, tile){
     Room.apply(this,arguments);
     this.id = colony.rooms.length;
     this.colony = colony;
+    this.tile = tile;
     this.type = 'mining';
     this.cost = 5;
     this.capacity = 2;
@@ -105,10 +106,11 @@ MiningRoom.prototype = Object.create(Room.prototype);
 MiningRoom.prototype.constructor = MiningRoom;
 
 //Create Farming Room Prototype
-var FarmingRoom = function(colony){
+var FarmingRoom = function(colony, tile){
     Room.apply(this,arguments);
     this.id = colony.rooms.length;
     this.colony = colony;
+    this.tile = tile;
     this.type = 'farming';
     this.cost = 3;
     this.capacity = 2;
