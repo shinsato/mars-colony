@@ -61,8 +61,7 @@
         }
 
 
-            $scope.rows = 7;
-
+            $scope.rows = 35;
             $scope.startup = function(rows) {
 
             var startY = _.random(0, rows - 1);
