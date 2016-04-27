@@ -29,6 +29,12 @@ var Person = function(colony){
     this.room = 0;
 };
 
+//@todo: Create make baby function
+//splice genes take half of chromosomes from each attribute and mix
+
+//@todo: create conceive function
+//cannot concieve child if there are 9 chromosome matches in lined up pairs
+
 Person.prototype.Age = function() {
     if(!this.alive){
         return false;
